@@ -89,16 +89,30 @@ function validate($conn){
                 adddata();
                 
             }
+
                 else{
-                    $sql = "INSERT INTO DOlinks ( olink , nlink)
-                    VALUES ('$oldlink' ,'$newlink')";
                     
-                    if ($conn->query($sql) === TRUE) {
-                        echo '<h3 >your link has been created successfully </h3> <span> your main link is :</span>  '.$oldlink ."<br> <span>and new link is :</span> localhost/Ayat-Mustafa-Mon-3/link.php?id=" . $newlink ;
+            $sql = "SELECT id, olink, nlink  FROM DOlinks where olink='$oldlink' ";
+            $result = $conn->query($sql);
+            if ($result->num_rows >0) {
+                while($row = $result->fetch_assoc()) {
+                echo '<h3 >your link has been created successfully </h3> <span> your main link is :</span>  '.$oldlink ."<br> <span>and new link is :</span> localhost/Ayat-Mustafa-Mon-3/link.php?id=" . $row["nlink"];
+
+            }
+        }else{
+
+                $sql = "INSERT INTO DOlinks ( olink , nlink)
+                VALUES ('$oldlink' ,'$newlink')";
                 
-                    } else {
-                        echo "Error: " . $sql . "<br>" . $conn->error;
-                    }
+                if ($conn->query($sql) === TRUE) {
+                    echo '<h3 >your link has been created successfully </h3> <span> your main link is :</span>  '.$oldlink ."<br> <span>and new link is :</span> localhost/Ayat-Mustafa-Mon-3/link.php?id=" . $newlink ;
+            
+                } else {
+                    echo "Error: " . $sql . "<br>" . $conn->error;
+                }
+            }
+           
+                   
                 }
         }
         else{
